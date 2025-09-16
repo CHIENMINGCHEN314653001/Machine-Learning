@@ -1,7 +1,6 @@
-# --- 安裝所需套件 ---
 !pip install torch numpy matplotlib scikit-learn
 
-# --- 導入套件 ---
+# --- Import libraries ---
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -12,11 +11,11 @@ from sklearn.metrics import mean_squared_error
 import warnings
 warnings.filterwarnings('ignore')
 
-# 設定中文字體
-plt.rcParams['font.sans-serif'] = ['DejaVu Sans']
+# Set Chinese font (removed since we're using English now)
+# plt.rcParams['font.sans-serif'] = ['DejaVu Sans']
 plt.rcParams['axes.unicode_minus'] = False
 
-# --- 定義龍格函數 ---
+# --- Define Runge function ---
 def runge_function(x):
     return 1 / (1 + 25 * x**2)
 
@@ -25,7 +24,7 @@ def generate_data(n_samples=1000):
     y = runge_function(x)
     return x, y
 
-# --- 定義神經網路模型 ---
+# --- Define neural network models ---
 class StandardMLP(nn.Module):
     def __init__(self, hidden_size=128, num_layers=3):
         super(StandardMLP, self).__init__()
@@ -42,11 +41,11 @@ class FourierFeatureMLP(nn.Module):
     def __init__(self, num_frequencies=25, hidden_size=128):
         super(FourierFeatureMLP, self).__init__()
         self.num_frequencies = num_frequencies
-        # 修正：從 0 到 num_frequencies（包含）
+        # Fix: from 0 to num_frequencies (inclusive)
         self.frequencies = torch.arange(0, num_frequencies + 1).float()
         
-        # 修正：正確計算輸入特徵維度
-        input_features = 2 * (num_frequencies + 1)  # cos + sin 對於每個頻率
+        # Fix: correct input feature dimension calculation
+        input_features = 2 * (num_frequencies + 1)  # cos + sin for each frequency
         
         self.main_network = nn.Sequential(
             nn.Linear(input_features, hidden_size),
@@ -60,23 +59,23 @@ class FourierFeatureMLP(nn.Module):
         batch_size = x.shape[0]
         frequencies = self.frequencies.to(x.device)
         
-        # 修正：正確的維度計算
+        # Fix: correct dimension calculation
         x_expanded = x.unsqueeze(-1)  # [batch_size, 1] -> [batch_size, 1, 1]
         k_expanded = frequencies.unsqueeze(0).unsqueeze(0)  # [num_freq] -> [1, 1, num_freq]
         
-        # 計算 2πkx
+        # Calculate 2πkx
         argument = 2 * torch.pi * k_expanded * x_expanded  # [batch_size, 1, num_freq]
         
-        # 計算 cos 和 sin
+        # Calculate cos and sin
         cos_features = torch.cos(argument).squeeze(1)  # [batch_size, num_freq]
         sin_features = torch.sin(argument).squeeze(1)  # [batch_size, num_freq]
         
-        # 合併特徵
+        # Combine features
         fourier_features = torch.cat([cos_features, sin_features], dim=1)  # [batch_size, 2 * num_freq]
         
         return self.main_network(fourier_features)
 
-# --- 訓練函數 ---
+# --- Training function ---
 def train_model(model, x_train, y_train, x_val, y_val, epochs=2000, lr=0.001, model_name="Model"):
     x_train_t = torch.FloatTensor(x_train).unsqueeze(1)
     y_train_t = torch.FloatTensor(y_train).unsqueeze(1)
@@ -88,7 +87,7 @@ def train_model(model, x_train, y_train, x_val, y_val, epochs=2000, lr=0.001, mo
     
     train_losses, val_losses = [], []
     
-    print(f"開始訓練 {model_name}...")
+    print(f"Training {model_name}...")
     for epoch in range(epochs):
         model.train()
         optimizer.zero_grad()
@@ -122,108 +121,108 @@ def evaluate_model(model, x_test, y_test):
     max_error = np.max(np.abs(y_test - predictions))
     return predictions, mse, max_error
 
-# --- 主程式 ---
+# --- Main program ---
 def main():
-    print("=== 龍格函數神經網路逼近實驗 ===")
-    print("正在生成數據...")
+    print("=== Neural Network Approximation of Runge Function ===")
+    print("Generating data...")
     
-    # 生成數據
-    x, y = generate_data(800)  # 減少數據點以避免記憶體問題
+    # Generate data
+    x, y = generate_data(800)  # Reduce data points to avoid memory issues
     x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=0.2, random_state=42)
     
-    # 創建模型
-    print("初始化模型...")
-    standard_model = StandardMLP(hidden_size=64, num_layers=2)  # 減少網路大小
-    fourier_model = FourierFeatureMLP(num_frequencies=15, hidden_size=64)  # 減少頻率數量
+    # Create models
+    print("Initializing models...")
+    standard_model = StandardMLP(hidden_size=64, num_layers=2)  # Reduce network size
+    fourier_model = FourierFeatureMLP(num_frequencies=15, hidden_size=64)  # Reduce frequency count
     
-    # 檢查模型參數
-    print(f"標準MLP參數量: {sum(p.numel() for p in standard_model.parameters())}")
-    print(f"傅立葉MLP參數量: {sum(p.numel() for p in fourier_model.parameters())}")
+    # Check model parameters
+    print(f"Standard MLP parameters: {sum(p.numel() for p in standard_model.parameters())}")
+    print(f"Fourier MLP parameters: {sum(p.numel() for p in fourier_model.parameters())}")
     
-    # 訓練模型
-    print("\n開始訓練標準MLP...")
+    # Train models
+    print("\nTraining Standard MLP...")
     std_train_loss, std_val_loss = train_model(standard_model, x_train, y_train, x_val, y_val, 
-                                              epochs=1500, lr=0.0005, model_name="標準MLP")
+                                              epochs=1500, lr=0.0005, model_name="Standard MLP")
     
-    print("\n開始訓練傅立葉MLP...")
+    print("\nTraining Fourier MLP...")
     fourier_train_loss, fourier_val_loss = train_model(fourier_model, x_train, y_train, x_val, y_val, 
-                                                      epochs=1000, lr=0.001, model_name="傅立葉MLP")
+                                                      epochs=1000, lr=0.001, model_name="Fourier MLP")
     
-    # 評估模型
-    print("\n正在評估模型...")
+    # Evaluate models
+    print("\nEvaluating models...")
     x_test = np.linspace(-1, 1, 1000)
     y_test = runge_function(x_test)
     
     std_pred, std_mse, std_max_err = evaluate_model(standard_model, x_test, y_test)
     fourier_pred, fourier_mse, fourier_max_err = evaluate_model(fourier_model, x_test, y_test)
     
-    # 輸出結果
-    print(f"\n=== 實驗結果 ===")
-    print(f"標準MLP - MSE: {std_mse:.2e}, 最大誤差: {std_max_err:.2e}")
-    print(f"傅立葉MLP - MSE: {fourier_mse:.2e}, 最大誤差: {fourier_max_err:.2e}")
+    # Output results
+    print(f"\n=== Experimental Results ===")
+    print(f"Standard MLP - MSE: {std_mse:.2e}, Max Error: {std_max_err:.2e}")
+    print(f"Fourier MLP - MSE: {fourier_mse:.2e}, Max Error: {fourier_max_err:.2e}")
     improvement = (std_mse - fourier_mse) / std_mse * 100
-    print(f"MSE改善: {improvement:.1f}%")
+    print(f"MSE Improvement: {improvement:.1f}%")
     
-    # 繪製圖表
-    print("\n正在生成圖表...")
+    # Generate charts
+    print("\nGenerating charts...")
     
-    # 1. 函數比較圖
+    # 1. Function comparison chart
     fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(15, 12))
     
-    ax1.plot(x_test, y_test, 'b-', label='真實函數', linewidth=3)
-    ax1.plot(x_test, std_pred, 'r--', label='標準MLP', linewidth=2)
-    ax1.set_title('標準MLP逼近效果')
+    ax1.plot(x_test, y_test, 'b-', label='True Function', linewidth=3)
+    ax1.plot(x_test, std_pred, 'r--', label='Standard MLP', linewidth=2)
+    ax1.set_title('Standard MLP Approximation')
     ax1.set_xlabel('x')
     ax1.set_ylabel('f(x)')
     ax1.legend()
     ax1.grid(True, alpha=0.3)
     
-    ax2.plot(x_test, y_test, 'b-', label='真實函數', linewidth=3)
-    ax2.plot(x_test, fourier_pred, 'g--', label='傅立葉MLP', linewidth=2)
-    ax2.set_title('傅立葉特徵MLP逼近效果')
+    ax2.plot(x_test, y_test, 'b-', label='True Function', linewidth=3)
+    ax2.plot(x_test, fourier_pred, 'g--', label='Fourier MLP', linewidth=2)
+    ax2.set_title('Fourier Feature MLP Approximation')
     ax2.set_xlabel('x')
     ax2.set_ylabel('f(x)')
     ax2.legend()
     ax2.grid(True, alpha=0.3)
     
-    # 損失曲線
-    ax3.semilogy(std_train_loss, 'r-', label='訓練損失', alpha=0.8)
-    ax3.semilogy(std_val_loss, 'darkred', label='驗證損失', alpha=0.8)
-    ax3.set_title('標準MLP: 訓練/驗證損失')
-    ax3.set_xlabel('訓練輪數')
-    ax3.set_ylabel('MSE損失')
+    # Loss curves
+    ax3.semilogy(std_train_loss, 'r-', label='Training Loss', alpha=0.8)
+    ax3.semilogy(std_val_loss, 'darkred', label='Validation Loss', alpha=0.8)
+    ax3.set_title('Standard MLP: Training/Validation Loss')
+    ax3.set_xlabel('Epochs')
+    ax3.set_ylabel('MSE Loss')
     ax3.legend()
     ax3.grid(True, alpha=0.3)
     
-    ax4.semilogy(fourier_train_loss, 'g-', label='訓練損失', alpha=0.8)
-    ax4.semilogy(fourier_val_loss, 'darkgreen', label='驗證損失', alpha=0.8)
-    ax4.set_title('傅立葉MLP: 訓練/驗證損失')
-    ax4.set_xlabel('訓練輪數')
-    ax4.set_ylabel('MSE損失')
+    ax4.semilogy(fourier_train_loss, 'g-', label='Training Loss', alpha=0.8)
+    ax4.semilogy(fourier_val_loss, 'darkgreen', label='Validation Loss', alpha=0.8)
+    ax4.set_title('Fourier MLP: Training/Validation Loss')
+    ax4.set_xlabel('Epochs')
+    ax4.set_ylabel('MSE Loss')
     ax4.legend()
     ax4.grid(True, alpha=0.3)
     
     plt.tight_layout()
     plt.show()
     
-    # 2. 誤差分析圖
+    # 2. Error analysis chart
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
     
-    ax1.plot(x_test, np.abs(y_test - std_pred), 'r-', label='標準MLP誤差', alpha=0.8)
-    ax1.plot(x_test, np.abs(y_test - fourier_pred), 'g-', label='傅立葉MLP誤差', alpha=0.8)
-    ax1.set_title('絕對誤差比較')
+    ax1.plot(x_test, np.abs(y_test - std_pred), 'r-', label='Standard MLP Error', alpha=0.8)
+    ax1.plot(x_test, np.abs(y_test - fourier_pred), 'g-', label='Fourier MLP Error', alpha=0.8)
+    ax1.set_title('Absolute Error Comparison')
     ax1.set_xlabel('x')
-    ax1.set_ylabel('|誤差|')
+    ax1.set_ylabel('|Error|')
     ax1.legend()
     ax1.grid(True, alpha=0.3)
     ax1.set_yscale('log')
     
-    models = ['標準MLP', '傅立葉MLP']
+    models = ['Standard MLP', 'Fourier MLP']
     mse_values = [std_mse, fourier_mse]
     colors = ['red', 'green']
     bars = ax2.bar(models, mse_values, color=colors, alpha=0.7)
-    ax2.set_title('MSE比較')
-    ax2.set_ylabel('均方誤差')
+    ax2.set_title('MSE Comparison')
+    ax2.set_ylabel('Mean Squared Error')
     ax2.set_yscale('log')
     
     for i, (bar, value) in enumerate(zip(bars, mse_values)):
@@ -233,8 +232,8 @@ def main():
     plt.tight_layout()
     plt.show()
     
-    print("\n=== 實驗完成 ===")
+    print("\n=== Experiment Completed ===")
 
-# 運行主程式
+# Run main program
 if __name__ == "__main__":
     main()
