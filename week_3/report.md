@@ -5,9 +5,8 @@
 
 ## Ⅰ. Background
 
-This paper studies how **tanh neural networks** (networks using the hyperbolic tangent activation function) can approximate mathematical functions. A key step is showing that neural networks can approximate **polynomials** and **basic power functions**like  $$x^2, x^3, \dots\ $$.
+This paper studies how tanh neural networks (networks using the hyperbolic tangent activation function) can approximate mathematical functions. A key step is showing that neural networks can approximate polynomials and basic power functions like $$x^2, x^3, \dots\ $$.
 
-Why is this important?
 - Many functions can be built from polynomials (think of Taylor expansions).
 - If a neural network can approximate powers of a variable, it can be combined to approximate much more complex functions.
 
@@ -61,20 +60,18 @@ Think of $$x^2$$. Since tanh naturally gives odd-like shapes, it’s not easy to
 
 ---
 
-## Ⅳ. Important
 
+## Ⅳ. Summary
 - Together, Lemma 3.1 and 3.2 show that a shallow tanh neural network can approximate any polynomial function (odd or even powers).
 - Since polynomials can approximate any continuous function on a bounded interval (Weierstrass Approximation Theorem), these lemmas are the building blocks for proving that tanh networks are powerful universal approximators.
-
----
-
-## Ⅴ. Summary
-
 - Lemma 3.1: Shallow tanh networks can approximate odd powers ($$x, x^3, x^5, \dots$$).
 - Lemma 3.2: By combining odd powers, they can also approximate even powers ($$1, x^2, x^4, \dots$$).
-- Together: Any polynomial can be approximated by a shallow tanh neural network.
+- Comprehensive: Any polynomial can be approximated by a shallow tanh neural network.
 - By extension: Since polynomials approximate all continuous functions (Weierstrass theorem), tanh networks serve as universal approximators.
-- Key: With just one hidden layer, tanh neural networks already have the mathematical power to approximate essentially any function we care about.
+- Key: Even with only one hidden layer, tanh neural networks still have the mathematical power to approximate any function.
 
 ---
 
+Example link:https://colab.research.google.com/drive/1D9K4-884yM9TjwaHkSyakIfExqYZdmLn?usp=sharing
+
+---
