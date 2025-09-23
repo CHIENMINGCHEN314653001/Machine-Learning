@@ -68,7 +68,7 @@ Think of $$x^2$$. Since tanh naturally gives odd-like shapes, it’s not easy to
 
 ---
 
-## Ⅵ. Summary
+## Ⅴ. Summary
 
 - Lemma 3.1: Shallow tanh networks can approximate odd powers ($$x, x^3, x^5, \dots$$).
 - Lemma 3.2: By combining odd powers, they can also approximate even powers ($$1, x^2, x^4, \dots$$).
