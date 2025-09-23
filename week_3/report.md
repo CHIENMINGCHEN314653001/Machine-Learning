@@ -5,7 +5,7 @@
 
 ## Ⅰ. Background
 
-This paper studies how tanh neural networks (networks using the hyperbolic tangent activation function) can approximate mathematical functions. A key step is showing that neural networks can approximate polynomials and basic power functions like $$x^2, x^3, \dots\ $$.
+This part studies how tanh neural networks (networks using the hyperbolic tangent activation function) can approximate mathematical functions. A key step is showing that neural networks can approximate polynomials and basic power functions like $$x^2, x^3, \dots\ $$.
 
 - Many functions can be built from polynomials (think of Taylor expansions).
 - If a neural network can approximate powers of a variable, it can be combined to approximate much more complex functions.
