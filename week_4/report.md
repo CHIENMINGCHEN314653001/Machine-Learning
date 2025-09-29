@@ -2,35 +2,37 @@
 # Flow Diagram
 ```mermaid
 graph TD
-    classDef inputNode fill:#f9f,stroke:#333,stroke-width:2px,color:#000;
-    classDef processNode fill:#bbf,stroke:#333,stroke-width:2px,color:#000;
-    classDef datasetNode fill:#bfb,stroke:#333,stroke-width:2px,color:#000;
-    classDef modelNode fill:#fbf,stroke:#333,stroke-width:2px,color:#000;
-    classDef evalNode fill:#ffb,stroke:#333,stroke-width:2px,color:#000;
+    classDef inputNode fill:#f9f,stroke:#333,stroke-width:2px,color:#000,font-weight:bold;
+    classDef processNode fill:#bbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold,stroke-dasharray: 5 5;
+    classDef datasetNode fill:#bfb,stroke:#333,stroke-width:2px,color:#000,font-weight:bold;
+    classDef modelNode fill:#fbf,stroke:#333,stroke-width:2px,color:#000,font-weight:bold,stroke-dasharray: 2 2;
+    classDef evalNode fill:#ffb,stroke:#333,stroke-width:2px,color:#000,font-weight:bold;
 
-    A[Raw XML Data]:::inputNode
-    B[Data Parsing]:::processNode
-    C[Grid Data Extraction]:::processNode
-    D[Latitude and Longitude Coordinate Calculation]:::processNode
+    A([Raw XML Data]):::inputNode
+    B([Data Parsing]):::processNode
+    C([Grid Data Extraction]):::processNode
+    D([Latitude and Longitude Calculation]):::processNode
 
-    subgraph Classification process
+    subgraph Classification_Process["**Classification Process**"]
+        style Classification_Process fill:#dff0d8,stroke:#3c763d,stroke-width:2px,color:#3c763d,font-weight:bold
         direction TB
-        E[Classification dataset construction]:::datasetNode
-        G[Classification data construction]:::datasetNode
+        E([Classification Dataset Construction]):::datasetNode
+        G([Classification Data Construction]):::datasetNode
     end
 
-    subgraph Regression Process
+    subgraph Regression_Process["**Regression Process**"]
+        style Regression_Process fill:#d9edf7,stroke:#31708f,stroke-width:2px,color:#31708f,font-weight:bold
         direction TB
-        F[Regression dataset construction]:::datasetNode
-        H[Regression model training]:::modelNode
+        F([Regression Dataset Construction]):::datasetNode
+        H([Regression Model Training]):::modelNode
     end
 
-    I[Model Evaluation]:::evalNode
-
-
+  I([Model Evaluation]):::evalNode
     A --> B --> C --> D
     D --> E --> G --> I
     D --> F --> H --> I
+
+    linkStyle default interpolate basis
 ```
 ---
 # Integration and regression model analysis of Taiwan's temperature data
