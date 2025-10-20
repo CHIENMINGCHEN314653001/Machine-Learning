@@ -78,7 +78,7 @@ $$x_{t-1} = x_t + \epsilon S_{\sigma_t}(x_t) + \sqrt{2\epsilon}\, z, \quad z \si
 This process gradually transforms random noise into realistic data samples.
 
 ---
-
+ 
 **Conclusion**
 * Score Matching provides a theoretical framework for learning data distributions from gradients rather than densities themselves.
 * Denoising Score Matching introduces controllable noise, transforming the computationally difficult-to-calculate gradient estimation into a noise prediction task that is easy to train, fundamentally addressing its practicality.
