@@ -23,7 +23,7 @@ The score function points toward regions of higher data density.
   * Implicit score matching (ISM)
   * Denoising Score Matching (DSM)
 ---
-**Ⅱ. Explicit and Implicit Score Matching**
+**Ⅱ. Explicit Score Matching(ESM) and Implicit Score Matching(ISM)**
 
 The ESM objective minimizes the difference between the true and estimated score functions:
 
@@ -64,18 +64,29 @@ This allows us to train a neural network  $$S_\sigma(x;\theta)$$  to approximate
 
 **Ⅳ.Score-Based Generative Models**
 
-In score-based diffusion models, noise is gradually added to data through a forward diffusion process, producing multiple noise levels 
+In the forward process, a Markov chain or stochastic differential equation (SDE) is defined to gradually add noise to real data $x_0$ at different scales until it becomes pure Gaussian noise $x_T$.  
+This process systematically diffuses the data distribution into a noise distribution across multiple noise levels:
 
-$$\sigma_1 > \sigma_2 > \dots > \sigma_N.$$
+$$\sigma_1 > \sigma_2 > \cdots > \sigma_N$$
 
-The model learns a family of score functions $$S_\sigma(x)$$ for different noise levels using DSM.
+During training, the model learns to approximate the score function of the noisy data distribution $p_t(x)$ at each time step $t$:
 
-During generation (reverse process), we start from pure Gaussian noise and iteratively denoise samples using the learned scores:
+$$\mathbf{s}_\theta(x_t, t)$$
 
-$$x_{t-1} = x_t + \epsilon S_{\sigma_t}(x_t) + \sqrt{2\epsilon}\, z, \quad z \sim \mathcal{N}(0, I)$$
+The training objective is essentially a weighted sum of DSM losses, allowing the model to learn the denoising direction at each noise level.  
+In other words, the model learns a family of score functions:
 
-,which is equivalent to Langevin dynamics guided by the learned score function.  
-This process gradually transforms random noise into realistic data samples.
+$$S_{\sigma_t}(x)$$
+
+that capture the gradient information of the data distribution at various noise scales.
+
+In the reverse generation process, we start from pure Gaussian noise $x_T \sim \mathcal{N}(0, I)$ and iteratively denoise it using the learned score function $\mathbf{s}_\theta(x_t, t)$.  
+This process can be implemented using Langevin Dynamics or by solving the reverse SDE/ODE, typically expressed as:
+
+$$x_{t-1} = x_t + \epsilon \, S_{\sigma_t}(x_t) + \sqrt{2\epsilon}\, z, \quad z \sim \mathcal{N}(0, I)$$
+
+This is equivalent to Langevin dynamics guided by the learned score function.  
+Through iterative refinement, random noise is gradually transformed into realistic data samples.
 
 ---
  
