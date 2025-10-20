@@ -85,8 +85,7 @@ This process can be implemented using Langevin Dynamics or by solving the revers
 
 $$x_{t-1} = x_t + \epsilon \, S_{\sigma_t}(x_t) + \sqrt{2\epsilon}\, z, \quad z \sim \mathcal{N}(0, I)$$
 
-This is equivalent to Langevin dynamics guided by the learned score function.  
-Through iterative refinement, random noise is gradually transformed into realistic data samples.
+This is equivalent to Langevin dynamics guided by the learned score function.  Through iterative refinement, random noise is gradually transformed into realistic data samples.
 
 ---
  
