@@ -1,18 +1,18 @@
-# Report on Lemma 3.1 and Lemma 3.2  
+**Report on Lemma 3.1 and Lemma 3.2** 
 *Based on Ryck et al., “On the approximation of functions by tanh neural networks”*
 
----
+<br></br>
 
-## Ⅰ. Background
+**Ⅰ. Background**
 
 This part studies how tanh neural networks (networks using the hyperbolic tangent activation function) can approximate mathematical functions. A key step is showing that neural networks can approximate polynomials and basic power functions like $$x^2, x^3, \dots\ $$.
 
 - Many functions can be built from polynomials (think of Taylor expansions).
 - If a neural network can approximate powers of a variable, it can be combined to approximate much more complex functions.
 
----
+<br></br>
 
-## Ⅱ. Lemma 3.1 — Approximating Odd Powers
+ **Ⅱ. Lemma 3.1 — Approximating Odd Powers**
 
 **Formal Statement (simplified):**
 For any integer s and tolerance  $$\varepsilon > 0\ $$, there exists a **shallow tanh neural network** (just one hidden layer) that can approximate the functions
@@ -31,9 +31,9 @@ $$
 **Intuitive Explanation:**
 Imagine you want to draw the curve of  $$y = x^3\ $$. Instead of using the exact formula, you use combinations of squished S-shaped curves $$tanh$$. If you add them together in the right way, you can make a curve that looks very close to $$x^3\$$. Lemma 3.1 guarantees that this is always possible, no matter how high the odd power is.
 
----
+<br></br>
 
-## Ⅲ. Lemma 3.2 — Approximating Even Powers
+**Ⅲ. Lemma 3.2 — Approximating Even Powers**
 
 **Formal Statement (simplified):**
 For any odd integer $$s\$$ and tolerance $$\varepsilon > 0$$, there exists a shallow tanh neural network that can approximate the functions
@@ -58,10 +58,10 @@ $$
 **Intuitive Explanation:**
 Think of $$x^2$$. Since tanh naturally gives odd-like shapes, it’s not easy to directly approximate $$\(x^2\)$$. But if you cleverly combine approximations of odd powers like \(x^3\) and $$\(x^1\)$$, you can recover \(x^2\). Lemma 3.2 shows how to systematically build even powers this way.
 
----
+<br></br>
 
 
-## Ⅳ. Summary
+**Ⅳ. Summary**
 - Together, Lemma 3.1 and 3.2 show that a shallow tanh neural network can approximate any polynomial function (odd or even powers).
 - Since polynomials can approximate any continuous function on a bounded interval (Weierstrass Approximation Theorem), these lemmas are the building blocks for proving that tanh networks are powerful universal approximators.
 - Lemma 3.1: Shallow tanh networks can approximate odd powers ($$x, x^3, x^5, \dots$$).
@@ -70,8 +70,8 @@ Think of $$x^2$$. Since tanh naturally gives odd-like shapes, it’s not easy to
 - By extension: Since polynomials approximate all continuous functions (Weierstrass theorem), tanh networks serve as universal approximators.
 - Key: Even with only one hidden layer, tanh neural networks still have the mathematical power to approximate any function.
 
----
+<br></br>
 
 Example link:https://colab.research.google.com/drive/1D9K4-884yM9TjwaHkSyakIfExqYZdmLn?usp=sharing
 
----
+<br></br>
