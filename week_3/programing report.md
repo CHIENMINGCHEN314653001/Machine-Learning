@@ -98,3 +98,6 @@ $$
   - 導數 MSE ≈ $$10^{-3}$$
 
 <br></br>
+**Ⅵ.程式碼**
+
+link: https://colab.research.google.com/drive/1RaJ7T0xTzwwhh5VaTrN1B3VSS-5xA1Hk?usp=sharing
