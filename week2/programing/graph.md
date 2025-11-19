@@ -1,3 +1,4 @@
+```python
 !pip install torch numpy matplotlib scikit-learn
 
 # --- Import libraries ---
@@ -237,3 +238,4 @@ def main():
 # Run main program
 if __name__ == "__main__":
     main()
+```
