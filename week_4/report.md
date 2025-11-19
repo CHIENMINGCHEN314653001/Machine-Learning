@@ -1,5 +1,4 @@
-
-# Flow Diagram
+**Flow Diagram**
 ```mermaid
 graph TD
     classDef inputNode fill:#f9f,stroke:#333,stroke-width:2px,color:#000,font-weight:bold;
@@ -34,67 +33,70 @@ graph TD
 
     linkStyle default interpolate basis
 ```
----
-# Integration and regression model analysis of Taiwan's temperature data
+<br></br>
+**Integration and regression model analysis of Taiwan's temperature data**
 
-## Ⅰ. Research Background and Data Analysis
+<br></br>
 
-### Research Background
+**Ⅰ. Research Background and Data Analysis**
+
+**Research Background**
 * This study aims to extract information from raw XML-formatted temperature grid data and build classification and regression models.
   * The classification model determines whether a data point is valid (valid = 1, missing = -999 is marked as 0).
   * The regression model predicts the temperature value for valid data points.
 
-### Data Parsing Process
+**Data Parsing Process**
 * Use Python's `xml.etree.ElementTree` to parse XML content.
 * Obtain geographic range information (latitude and longitude of the lower left and upper right corners).
 * Read the temperature grid data and convert it into a two-dimensional NumPy array.
 * Example data shape: `(rows, cols)`, representing the number of rows and columns in the grid.
----
 
-## II. Dataset Construction and Feature Description
+<br></br>
 
-### Dataset Construction
+**II. Dataset Construction and Feature Description**
+
+**Dataset Construction**
 * Based on the grid data and geographic coordinates, calculate the longitude and latitude of each grid point.
 * Classification Dataset:
   * The label 0 indicates a missing value (-999), and 1 indicates a valid temperature value.
 * Regression Dataset:
   * Contains only longitude, latitude, and temperature values ​​with valid temperature values.
-### Data Source
+**Data Source**
 * Dataset: Central Meteorological Administration Open Data Platform O-A0038-003.xml
 * Grid Size: 67 longitude × 120 latitude
 * Resolution: 0.03 degrees
 * Missing Value Flag: -999
-### Feature Description
+**Feature Description**
 * Input Features: Longitude, Latitude
 * Classification Label: Label (0 or 1)
 * Regression Target: Temperature (temperature value)
 
----
+<br></br>
 
-## III. Model Training and Evaluation
+**III. Model Training and Evaluation**
 
-### Classification Model
+**Classification Model**
 * RandomForestClassifier.
 * Data Split: 80% training, 20% testing, maintaining label ratio.
 * Evaluation Metrics:
   * Accuracy
   * Detailed Classification Report (Precision, Recall, F1-score)
 
-### Regression Model
+**Regression Model**
 * Uses a Random Forest Regressor.
 * Data split: 80% training, 20% testing.
 * Evaluation metrics:
   * Mean Squared Error (MSE)
   * Coefficient of Determination (R²)
 
-### Model Results Summary
+**Model Results Summary**
 * The classification model accuracy and classification report show that the model effectively distinguishes between valid and missing data.
 * The regression model MSE and R² metrics show that the model performs well in temperature prediction.
----
+<br></br>
 
-## Ⅳ. Visual Analysis and Conclusions
+**Ⅳ. Visual Analysis and Conclusions**
 
-### Visualization
+**Visualization**
 * **Data Availability Map**: The geographic distribution of valid and missing data points, categorized by red (0 = missing) and blue (1 = valid).
 
 ![Result graph](圖一.jpg)
@@ -111,7 +113,7 @@ graph TD
 
 ![Result graph](圖四.jpg)
 
-### Advanced Visualization
+**Advanced Visualization**
 * Temperature distribution histogram and latitude grouped box plots show temperature trends by latitude.
 
 ![Result graph](圖五.jpg)
@@ -124,7 +126,9 @@ graph TD
 
 ![Result graph](圖八.jpg)  
 
-## Ⅴ. Summary
+<br></br>
+
+**Ⅴ. Summary**
 * Classification Model Results
   * Using the random forest classifier, the accuracy was over 95%.
   * The confusion matrix shows that most missing values ​​(-999) and valid values ​​were correctly classified, indicating that the model has good discriminative power.
@@ -139,10 +143,11 @@ graph TD
   * The regression model performed well in temperature prediction, with an R² of over 0.85, indicating that the model successfully captured the relationship between Taiwan's geography and temperature distribution.
   * Feature importance analysis showed that latitude has a greater impact on temperature than longitude, consistent with climatic patterns.
 
----
-## Ⅵ.References
+<br></br>
+
+**Ⅵ.References**
 * 中央氣象署開放資料平台：https://opendata.cwa.gov.tw/
 
----
-## Programing code
+<br></br>
+**Programing code**
 * link:https://colab.research.google.com/drive/1r-AXKBeHSEcg1fPWZMcrHKKc9rc6TSbv?usp=sharing
