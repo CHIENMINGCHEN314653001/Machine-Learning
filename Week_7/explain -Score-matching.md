@@ -17,12 +17,12 @@ $$S(x) = \nabla_x \log p(x)$$
 
 The score function points toward regions of higher data density.
 
----
+<br></br>
 **Score matching is divided into three types:**
   * Explicit score matching (ESM)
   * Implicit score matching (ISM)
   * Denoising Score Matching (DSM)
----
+<br></br>
 **Ⅱ. Explicit Score Matching(ESM) and Implicit Score Matching(ISM)**
 
 The ESM objective minimizes the difference between the true and estimated score functions:
@@ -42,7 +42,7 @@ Thus, $$L_{\text{ISM}}$$ and $$L_{\text{ESM}}$$ are equivalent in optimization.
 However, the original objective function (such as Implicit Score Matching,ISM) contains $$\text{Tr}(\nabla_x \mathbf{s}_\theta(x))$$ , which involves expensive second-order derivative computations in high-dimensional data, making it difficult to apply in practice.
 
 
----
+<br></br>
 
 **Ⅲ. Denoising Score Matching (DSM)**
 
@@ -60,7 +60,7 @@ $$L_{\text{DSM}}(\theta) =  \mathbb{E}_{x_0\sim p_0(x_0)}\mathbb{E}_{x|x_0\sim p
 
 This allows us to train a neural network  $$S_\sigma(x;\theta)$$  to approximate  $$\nabla_x \log p_\sigma(x)$$.
 
----
+<br></br>
 
 **Ⅳ.Score-Based Generative Models**
 
@@ -87,7 +87,7 @@ $$x_{t-1} = x_t + \epsilon \, S_{\sigma_t}(x_t) + \sqrt{2\epsilon}\, z, \quad z 
 
 This is equivalent to Langevin dynamics guided by the learned score function.  Through iterative refinement, random noise is gradually transformed into realistic data samples.
 
----
+<br></br>
  
 **Conclusion**
 * Score Matching provides a theoretical framework for learning data distributions from gradients rather than densities themselves.
