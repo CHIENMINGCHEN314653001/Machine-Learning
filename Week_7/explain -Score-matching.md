@@ -1,4 +1,4 @@
- ### Explain the abstraction of score matching
+**Explain the abstraction of score matching**
 
 **Ⅰ. Abstraction of Score Matching**
 
@@ -22,6 +22,7 @@ The score function points toward regions of higher data density.
   * Explicit score matching (ESM)
   * Implicit score matching (ISM)
   * Denoising Score Matching (DSM)
+
 <br></br>
 **Ⅱ. Explicit Score Matching(ESM) and Implicit Score Matching(ISM)**
 
